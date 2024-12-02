@@ -4,7 +4,9 @@
     {
         private static void Main()
         {
-            Console.WriteLine("Hello, World!");
+            var bankAccount = new BankAccount(0m, "John Doe");
+            bankAccount.Deposit(100);
+            Console.WriteLine(bankAccount.GetBalance());
         }
     }
 }
