@@ -37,11 +37,12 @@ public class CartItem
     }
     
     public string TotalPriceFormatted => (Price * Quantity).ToString("C", _culture);
+    public decimal TotalPrice => (Price * Quantity);
     
     public CartItem(string name, decimal price = DEFAULT_PRICE, int quantity = DEFAULT_QUANTITY)
     {
         Id = Guid.NewGuid().ToString().Substring(0, 8);
-        Name = name;
+        Name = name ?? "";
         Quantity = quantity;
         Price = price;
         CartItemsCount++;

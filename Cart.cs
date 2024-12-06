@@ -1,30 +1,53 @@
+using OPP.Payment;
+
 namespace OPP;
 
 public class Cart
 {
-    public List<CartItem> Items { get; private set; }
+    private readonly IList<CartItem> _items;
+
+    public IEnumerable<CartItem> Items
+    {
+        get { return _items.AsEnumerable(); }
+    }
 
     public Cart()
     {
-        Items = new List<CartItem>();
+        _items = new List<CartItem>();
     }
 
     public void AddItem(CartItem item)
     {
-        Items.Add(item);
+        _items.Add(item);
     }
 
-    public void RemoveItem(string itemId)
+    public void RemoveItem(CartItem item)
     {
-        Items.RemoveAll(i => i.Id == itemId);
+        _items.Remove(item);
     }
 
     public void PrintItems()
     {
-        Console.WriteLine($"Items count: {Items.Count}");
-        foreach (var cartItem in Items)
+        Console.WriteLine($"Items count: {_items.Count}");
+        foreach (var cartItem in _items)
         {
             Console.WriteLine($"{cartItem.Id}: {cartItem.Name} {cartItem.TotalPriceFormatted}");
         }
+    }
+
+    public decimal GetTotalPrice()
+    {
+        decimal totalPrice = 0;
+        foreach (var item in _items)
+        {
+            totalPrice += item.TotalPrice;
+        }
+
+        return totalPrice;
+    }
+
+    public void Pay(IPayment paymentMethod)
+    {
+        paymentMethod.ProcessPayment(this);
     }
 }
